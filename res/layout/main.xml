@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout android:layout_width="540dp"
-             android:layout_height="960dp"
+<LinearLayout android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
              xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/frameLayout">
+             android:id="@+id/mainFrameLayout" android:orientation="horizontal">
 
-    <fragment android:layout_width="fill_parent"
-              android:layout_height="660dp"
-              android:name="com.example.ClassLoaderDemo.SampleFragment"
-              android:id="@+id/child_app_fragment"
-              android:layout_gravity="center_horizontal|top"/>
+    <android.opengl.GLSurfaceView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/surfaceView"/>
 
-    <ImageView android:layout_width="fill_parent"
+    <ImageView android:layout_width="match_parent"
                android:layout_height="300dp"
                android:id="@+id/imageView"
-               android:src="@drawable/enplug_default3"
-               android:layout_gravity="bottom|right"/>
+               android:src="@drawable/enplug_default3"/>
 
-</FrameLayout>
+</LinearLayout>
