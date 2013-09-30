@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
 
 public class MainActivity extends Activity
 {
-    Fragment fragment;
     GLSurfaceView glView;
 
     @Override
@@ -29,18 +28,15 @@ public class MainActivity extends Activity
 
         try
         {
-            Log.d("MainActivity", "***************Initializing Class Loader");
+            Log.d("MainActivity", "Initializing Class Loader");
             final Context childAppCtx = getApplicationContext().createPackageContext("com.example.TestApplication", Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
 
-            Log.d("MainActivity", "++++++++++++++++Finding child app main renderer class");
+            Log.d("MainActivity", "Using class loader to find renderer in child app.");
 
-            //Class<?> loadedClass = Class.forName("com.example.TestApplication.ExternalFragment", true, childAppCtx.getClassLoader());
             final Class<?> loadedClass = Class.forName("com.example.TestApplication.MyGLRenderer", true, childAppCtx.getClassLoader());
 
-            Log.d("MainActivity", "----------------Instantiating Renderer");
-            //return Class.forName(className).getConstructor(String.class).newInstance(arg);
+            Log.d("MainActivity", "Instantiating Renderer");
 
-            //fragment = (Fragment) loadedClass.newInstance();
             final GLSurfaceView.Renderer renderer = (GLSurfaceView.Renderer) loadedClass.getDeclaredConstructor(Context.class).newInstance(getApplicationContext());
 
             Log.d("MainActivity", "Instantiated renderer");
@@ -48,34 +44,13 @@ public class MainActivity extends Activity
 
             Log.d("MainActivity", "Simple reflection test");
             Log.d("MainActivity", "External fragment created is: "+renderer.getClass().toString());
-            //calling a simple test method which does nothing but return a string from the external class object
-            //getMethod(..).invoke(..) seems to have trouble when using just loadedClass as the invoke param. Only worked when I used the object instance of type fragment.
-            //Log.d("MainActivity", "Calling test method"+loadedClass.getMethod("testMethod").invoke(fragment, null));
-
-            Log.d("MainActivity", "////////////////////Creating sample Fragment");
-
-            SampleFragment sampleFragment = new SampleFragment();
-            sampleFragment.setArguments(getIntent().getExtras());
-
-//            Log.d("MainActivit", "------------------------Creating transaction");
-//            FragmentManager fragmentManager = getFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//            fragmentTransaction.add(R.id.mainFrameLayout, sampleFragment);
-//            fragmentTransaction.add(R.id.mainFrameLayout, fragment);
-//
-//            Log.d("MainActivity", "Committing transaction!");
-//
-//            fragmentTransaction.commit();
-//            fragmentManager.executePendingTransactions();
-//            Log.d("MainActivity", "####################Fragment launch complete!");
         }
         catch(Exception ex)
         {
             Log.e("MainActivity", ex.toString());
         }
 
-
+        //Finish the glSurfaceView intialization now that we have the renderer setup
         glView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
     }
 }
